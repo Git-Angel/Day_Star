@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import AddTodoModal from "../components/AddTodoModal";
-import EditToDoModal from "../components/EditTodoModal";
+import EditToDoModal from "../components/EditToDoModal";
 
 export default function ToDo() {
   const [todos, setTodos] = useState([]);
