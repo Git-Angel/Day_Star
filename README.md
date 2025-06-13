@@ -94,7 +94,7 @@ Base URL: `https://jsonplaceholder.typicode.com`
 ## 📸 Screenshots of key features
 
 | Feature        | Screenshot/GIF                                                                     |
-| -------------- | ------------------------------------------                                         |
+| -------------- | -----------------------------------------------------------------------------------|
 | Todo List View | [Todo list view](./assets/ToDoList.jpg)<br>View of todos with filters              |
 | Add Todo Modal | [Add ToDo](./assets/AddToDo.jpg)<br>Modal for adding a new todo item.              |
 | 404 Page       | [404 Page](./assets/404Page.jpg)<br>Custom 404 error page with navigation back home|
