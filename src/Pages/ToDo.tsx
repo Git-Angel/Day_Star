@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import AddTodoModal from "../components/AddTodoModal";
 import EditToDoModal from "../components/EditToDoModal";
+import { useAuth } from "../context/AuthContext";
 
 // Type for a Todo item
 export interface Todo {
@@ -19,7 +20,9 @@ export default function ToDo() {
   const [loading, setLoading] = useState<boolean>(true);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filterStatus, setFilterStatus] = useState<"all" | "completed" | "incomplete">("all");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "completed" | "incomplete"
+  >("all");
 
   const TODOS_PER_PAGE = 10;
 
@@ -83,18 +86,29 @@ export default function ToDo() {
 
   const totalPages = Math.ceil(filteredTodos.length / TODOS_PER_PAGE);
 
+  const { logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       {/*Header section of todo app */}
       <header className="flex items-center justify-between p-4 border-b bg-emerald-500">
         <h1 className="text-2xl font-bold text-white">ToDo</h1>
         {/*Button to add a new item*/}
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="p-2 rounded-full bg-white hover:bg-slate-200 text-emerald-500 cursor-pointer"
-        >
-          <Plus className="h-5 w-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="p-2 rounded-full bg-white hover:bg-slate-200 text-emerald-500 cursor-pointer"
+          >
+            <Plus className="h-5 w-5" />
+          </button>
+
+          <button
+            onClick={logout}
+            className="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       {/*Body of the code*/}
@@ -122,7 +136,9 @@ export default function ToDo() {
             {["all", "completed", "incomplete"].map((status) => (
               <button
                 key={status}
-                onClick={() => setFilterStatus(status as "all" | "completed" | "incomplete")}
+                onClick={() =>
+                  setFilterStatus(status as "all" | "completed" | "incomplete")
+                }
                 className={`px-3 py-1 rounded ${
                   filterStatus === status
                     ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
