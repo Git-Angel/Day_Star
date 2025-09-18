@@ -7,15 +7,19 @@ export default function ErrorFallback() {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/");
-    }, 5000); 
+    }, 5000);
 
     return () => clearTimeout(timer); // Cleanup
   }, [navigate]);
-  
-  {/*Redirect to content page after 5 seconds*/}
+
+  {
+    /*Redirect to content page after 5 seconds*/
+  }
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-center p-4">
-      <h1 className="text-2xl font-bold mb-2 text-red-600">Something went wrong.</h1>
+      <h1 className="text-2xl font-bold mb-2 text-red-600">
+        Something went wrong.
+      </h1>
       <p className="text-gray-700 mb-4">
         You will be redirected to the homepage in 5 seconds.
       </p>

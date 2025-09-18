@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import four from "../assets/404ErrorPage.avif";
+// import four from "../assets/notfound.jpg"
+import notFound from "../assets/notfound.jpg"
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-4">
       <img
-        src={four}
+        src={notFound}
         alt="404 Error"
         className="w-64 h-auto sm:w-80 md:w-96 lg:w-[500px] mb-6"
       />

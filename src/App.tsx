@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import ToDo from "./Pages/ToDo";
 import TodoDetail from "./Pages/TodoDetail";
 import NotFound from "./Pages/NotFound";
@@ -6,11 +8,10 @@ import TestError from "./Pages/TestError";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ErrorFallback from "./components/ErrorFallback";
 import Skeleton from "./components/Skeleton";
-import { useState, useEffect } from "react";
 
 export default function App() {
-  //show skeleton at first, remove after 10 seconds to render page content
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  // show skeleton at first, remove after 10 seconds to render page content
+  const [showSkeleton, setShowSkeleton] = useState<boolean>(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,15 +27,15 @@ export default function App() {
       ) : (
         <div>
           <BrowserRouter>
-          <div>
-            <ErrorBoundary fallback={<ErrorFallback />}>
-              <Routes>
-                <Route path="/" element={<ToDo />} />
-                <Route path="/todos/:id" element={<TodoDetail />} />
-                <Route path="/test-error" element={<TestError />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </ErrorBoundary>
+            <div>
+              <ErrorBoundary fallback={<ErrorFallback />}>
+                <Routes>
+                  <Route path="/" element={<ToDo />} />
+                  <Route path="/todos/:id" element={<TodoDetail />} />
+                  <Route path="/test-error" element={<TestError />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ErrorBoundary>
             </div>
           </BrowserRouter>
         </div>

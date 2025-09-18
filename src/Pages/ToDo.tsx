@@ -4,41 +4,49 @@ import { Plus } from "lucide-react";
 import AddTodoModal from "../components/AddTodoModal";
 import EditToDoModal from "../components/EditToDoModal";
 
-export default function ToDo() {
-  const [todos, setTodos] = useState([]);
-  const [filteredTodos, setFilteredTodos] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+// Type for a Todo item
+export interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState("all"); // all | completed | incomplete
+export default function ToDo() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<"all" | "completed" | "incomplete">("all");
 
   const TODOS_PER_PAGE = 10;
 
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [editTodo, setEditTodo] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [editTodo, setEditTodo] = useState<Todo | null>(null);
 
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/todos")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: Todo[]) => {
         setTodos(data);
         setLoading(false);
       });
   }, []);
 
-  const showSuccess = (message) => {
+  const showSuccess = (message: string) => {
     setSuccessMessage(message);
     setTimeout(() => setSuccessMessage(""), 5000);
   };
 
-  const handleDelete = async (todoId) => {
-    const confirm = window.confirm(
+  const handleDelete = async (todoId: number) => {
+    const confirmDelete = window.confirm(
       "Are you sure you want to delete this todo item?"
     );
-    if (!confirm) return;
+    if (!confirmDelete) return;
 
     await fetch(`https://jsonplaceholder.typicode.com/todos/${todoId}`, {
       method: "DELETE",
@@ -114,7 +122,7 @@ export default function ToDo() {
             {["all", "completed", "incomplete"].map((status) => (
               <button
                 key={status}
-                onClick={() => setFilterStatus(status)}
+                onClick={() => setFilterStatus(status as "all" | "completed" | "incomplete")}
                 className={`px-3 py-1 rounded ${
                   filterStatus === status
                     ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
@@ -216,7 +224,7 @@ export default function ToDo() {
       <AddTodoModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onAdd={(newTodo) => {
+        onAdd={(newTodo: Todo) => {
           setTodos((prev) => [newTodo, ...prev]);
           showSuccess("Todo added successfully!");
         }}
@@ -225,7 +233,7 @@ export default function ToDo() {
         isOpen={!!editTodo}
         onClose={() => setEditTodo(null)}
         todo={editTodo}
-        onUpdate={(updatedTodo) => {
+        onUpdate={(updatedTodo: Todo) => {
           setTodos((prev) =>
             prev.map((t) => (t.id === updatedTodo.id ? updatedTodo : t))
           );

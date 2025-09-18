@@ -1,15 +1,27 @@
-
 import { useState } from "react";
 
+// Reuse Todo type (better: move this to a shared types.ts file)
+export interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
-export default function AddTodoModal({ isOpen, onClose, onAdd }) {
-  const [title, setTitle] = useState("");
+type AddTodoModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (todo: Todo) => void;
+};
 
-  const handleSubmit = async (e) => {
+export default function AddTodoModal({ isOpen, onClose, onAdd }: AddTodoModalProps) {
+  const [title, setTitle] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (title.trim() === "") return;
 
-    const newTodo = {
+    const newTodo: Omit<Todo, "id"> = {
       userId: 1, // Required by JSONPlaceholder
       title,
       completed: false,
@@ -22,7 +34,8 @@ export default function AddTodoModal({ isOpen, onClose, onAdd }) {
     });
 
     const data = await res.json();
-    onAdd({ ...data, id: Date.now() }); // Use Date.now() for temporary unique id
+    // Create a unique id locally since JSONPlaceholder doesn’t persist new todos
+    onAdd({ ...data, id: Date.now() });
     setTitle("");
     onClose();
   };

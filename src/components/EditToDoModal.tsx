@@ -1,9 +1,28 @@
-
 import { useState, useEffect } from "react";
 
-export default function EditTodoModal({ isOpen, onClose, todo, onUpdate }) {
-  const [title, setTitle] = useState(todo?.title || "");
-  const [completed, setCompleted] = useState(todo?.completed || false);
+// Reuse the same Todo type (ideally move to types.ts)
+export interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+type EditTodoModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  todo: Todo | null;
+  onUpdate: (todo: Todo) => void;
+};
+
+export default function EditTodoModal({
+  isOpen,
+  onClose,
+  todo,
+  onUpdate,
+}: EditTodoModalProps) {
+  const [title, setTitle] = useState<string>(todo?.title || "");
+  const [completed, setCompleted] = useState<boolean>(todo?.completed || false);
 
   useEffect(() => {
     if (todo) {
@@ -12,10 +31,11 @@ export default function EditTodoModal({ isOpen, onClose, todo, onUpdate }) {
     }
   }, [todo]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!todo) return; // safeguard if todo is null
 
-    const updatedTodo = {
+    const updatedTodo: Todo = {
       ...todo,
       title,
       completed,
@@ -31,7 +51,7 @@ export default function EditTodoModal({ isOpen, onClose, todo, onUpdate }) {
     onClose();
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !todo) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
